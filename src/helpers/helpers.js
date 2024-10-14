@@ -14,3 +14,8 @@ export const getTodos = async () => {
 
   return data.json();
 };
+export const removeTodo = async (id) => {
+  const data = await fetch(`http://localhost:5000/todos/${id}`, {method: 'DELETE'});
+
+  return data.json();
+};
