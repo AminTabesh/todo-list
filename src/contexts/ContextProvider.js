@@ -4,6 +4,8 @@ const todoContext = createContext();
 
 function ContextProvider({ children }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isEdditingSession, setIsEdditingSession] = useState(false)
+  const [editTodoObj, setEditTodoObj] = useState(null)
   const [isAnimating, setIsAnimating] = useState(false);
   const [todos, setTodos] = useState([]);
   const modalRef = useRef(null);
@@ -24,7 +26,11 @@ function ContextProvider({ children }) {
         setIsAnimating,
         handleCloseModal,
         todos,
-        setTodos
+        setTodos,
+        isEdditingSession,
+        setIsEdditingSession,
+        editTodoObj,
+        setEditTodoObj
       }}
     >
       {children}
