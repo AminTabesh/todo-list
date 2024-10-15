@@ -9,7 +9,7 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 // Allow the headers that can be sent with the request
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-$filePath = "../testDB.json";
+$filePath = "../db.json";
 $fileContent = file_get_contents($filePath);
 $todosArray = json_decode($fileContent, true);
 
