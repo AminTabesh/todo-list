@@ -27,7 +27,7 @@ function Modal() {
   const { mutate: mutateCreate } = useMutation({
     mutationFn: (data) => postTodo(data),
     onSuccess: (data) => {
-      setTodos((todos) => [...todos, data]);
+      queryClient.invalidateQueries("todos");
       handleCloseModal();
     },
     onError: (err) => {

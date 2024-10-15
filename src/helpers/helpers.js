@@ -1,6 +1,6 @@
 // postTodo.js
 export const postTodo = (data) => {
-  return fetch("http://localhost:5000/todos", {
+  return fetch("http://localhost:2000/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -10,7 +10,7 @@ export const postTodo = (data) => {
 };
 
 export const getTodos = async () => {
-  const data = await fetch("http://localhost:5000/todos");
+  const data = await fetch("http://localhost:2000/");
 
   return data.json();
 };
