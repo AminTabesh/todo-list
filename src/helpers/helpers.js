@@ -2,10 +2,7 @@
 export const postTodo = (data) => {
   return fetch("http://localhost:2000/", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+    body: data,
   }).then((res) => res.json());
 };
 
@@ -14,40 +11,34 @@ export const getTodos = async () => {
 
   return data.json();
 };
+
 export const removeTodo = async (id) => {
-  const data = await fetch(`http://localhost:5000/todos/${id}`, {
+  const data = await fetch(`http://localhost:2000`, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id }),
   });
 
   return data.json();
 };
 
 export const clearTodos = async () => {
-  const data = await fetch("http://localhost:5000/todos", {
-    method: "PUT",
+  const data = await fetch("http://localhost:2000", {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify([]),
+    body: JSON.stringify({ id: "clear-all" }),
   });
 
   return data.json();
 };
 
 export const editTodo = async (newTodo) => {
-  const response = await fetch(`http://localhost:5000/todos/${newTodo.id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newTodo),
-  });
-
-  // Check if the response is successful
-  if (!response.ok) {
-    throw new Error("Failed to update the todo");
-  }
-
-  // Parse the JSON response
-  return response.json();
+  return fetch("http://localhost:2000/", {
+    method: "PUT",
+    body: newTodo,
+  }).then((res) => res.json());
 };

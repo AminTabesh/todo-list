@@ -11,7 +11,6 @@ function Modal() {
     isAnimating,
     setIsAnimating,
     handleCloseModal,
-    setTodos,
     isEdditingSession,
     editTodoObj,
   } = useTodoContext();
@@ -37,10 +36,14 @@ function Modal() {
 
   const { mutate: mutateEdit } = useMutation({
     mutationFn: (newTodo) => editTodo(newTodo),
-    onSuccess: (res) => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries("todos");
-      handleCloseModal()
+      console.log(data);
+      handleCloseModal();
     },
+    onError: (err) => {
+      console.error(err);
+    }
   });
 
   useEffect(() => {
@@ -50,21 +53,28 @@ function Modal() {
   const fileInputRef = useRef(null);
 
   const onSubmitCreate = (data) => {
-    const todoObj = {
-      ...data,
-      image: data.image[0],
-    };
-    mutateCreate(todoObj);
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("desc", data.desc);
+
+    if (data.image && data.image.length > 0) {
+      formData.append("image", data.image[0]);
+    }
+
+    mutateCreate(formData);
   };
 
   const onSubmitEdit = (data) => {
-    const todoObj = {
-      ...data,
-      id: editTodoObj.id,
-      image: data.image[0],
-    };
+    const formData = new FormData();
+    formData.append("id", editTodoObj.id);
+    formData.append("title", data.title);
+    formData.append("desc", data.desc);
 
-    mutateEdit(todoObj);
+    if (data.image && data.image.length > 0) {
+      formData.append("image", data.image[0]);
+    }
+
+    mutateEdit(formData);
   };
 
   return (
@@ -87,6 +97,7 @@ function Modal() {
 
           {isEdditingSession ? (
             <form
+              encType="multipart/form-data"
               onSubmit={handleSubmit(onSubmitEdit)}
               className="flex flex-col items-center justify-center h-full w-full gap-4 pb-20"
             >
@@ -140,7 +151,7 @@ function Modal() {
                 type="file"
                 id="file"
                 className="file:bg-logo-primary file:border-none file:transition-colors file:rounded-lg file:hover:bg-logo-primary-dark file:text-white file:cursor-pointer file:py-2 file:px-4 w-full"
-                onChange={(e) => console.log(e.target.files[0]?.name)} // Log the file name
+                onChange={(e) => console.log(e.target.files[0]?.name)}
                 {...register("image")}
               />
               {errors.image && (
@@ -156,6 +167,7 @@ function Modal() {
             </form>
           ) : (
             <form
+              encType="multipart/form-data"
               onSubmit={handleSubmit(onSubmitCreate)}
               className="flex flex-col items-center justify-center h-full w-full gap-4 pb-20"
             >
@@ -206,7 +218,7 @@ function Modal() {
                 type="file"
                 id="file"
                 className="file:bg-logo-primary file:border-none file:transition-colors file:rounded-lg file:hover:bg-logo-primary-dark file:text-white file:cursor-pointer file:py-2 file:px-4 w-full"
-                onChange={(e) => console.log(e.target.files[0]?.name)} // Log the file name
+                onChange={(e) => console.log(e.target.files[0]?.name)}
                 {...register("image")}
               />
               {errors.image && (

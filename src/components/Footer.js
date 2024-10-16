@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useTodoContext } from "../contexts/ContextProvider";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { clearTodos } from "../helpers/helpers";
 
 function Footer() {
@@ -10,13 +10,14 @@ function Footer() {
     setIsEdditingSession,
     modalRef,
     handleCloseModal,
-    setTodos,
   } = useTodoContext();
+
+  const queryClient = useQueryClient()
 
   const { mutate, data } = useMutation({
     mutationFn: () => clearTodos(),
     onSuccess: () => {
-      setTodos([]);
+      queryClient.invalidateQueries('todos')
       console.log(data);
     },
   });
