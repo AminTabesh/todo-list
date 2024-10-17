@@ -1,14 +1,10 @@
 <?php
 
-
 header("Access-Control-Allow-Origin: http://localhost:3000");
-
 
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
-
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);  
@@ -39,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $imageTmpPath = $_FILES['image']['tmp_name'];
             $imageName = $_FILES['image']['name'];
             $uploadDir = '../public/'; 
-
 
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
